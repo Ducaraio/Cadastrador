@@ -15,6 +15,9 @@ public class UpdateClientes {
 				PreparedStatement ps = conn.prepareStatement(sql);
 				System.out.print("Novo Email: ");
 				String email = sc.next().strip();
+				if(email.isBlank() || email.length() < 10) {
+					throw new CadastradorExceptions("Error: Email inválido.");
+				}
 				ps.setString(1, email);
 				ps.setInt(2, id);
 				ps.execute();
@@ -25,6 +28,9 @@ public class UpdateClientes {
 				PreparedStatement ps = conn.prepareStatement(sql);
 				System.out.print("Novo Nome: ");
 				String nome = sc.nextLine().strip();
+				if(nome.isBlank() || nome.length() < 3) {
+					throw new CadastradorExceptions("Error: Nome Inválido.");
+				}
 				ps.setString(1, nome);
 				ps.setInt(2, id);
 				ps.execute();
@@ -35,6 +41,9 @@ public class UpdateClientes {
 				PreparedStatement ps = conn.prepareStatement(sql);
 				System.out.println("Nova Idade: ");
 				int idade = sc.nextInt();
+				if(idade < 0) {
+					throw new CadastradorExceptions("Error: Idade Inválida.");
+				}
 				ps.setInt(1, idade);
 				ps.setInt(2, id);
 				ps.execute();

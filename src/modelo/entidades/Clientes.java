@@ -2,23 +2,25 @@ package modelo.entidades;
 
 import java.util.Objects;
 
+import modelo.mainexceptions.CadastradorExceptions;
+
 public class Clientes {
 	private Integer id;
 	private String email;
 	private String nome;
 	private int idade;
 	
-	public Clientes(Integer id, String email, String nome, int idade) {
+	public Clientes(Integer id, String email, String nome, int idade) throws CadastradorExceptions {
 		this.id = id;
-		this.email = email;
-		this.nome = nome;
-		this.idade = idade;
+		this.setEmail(email);
+		this.setNome(nome);
+		this.setIdade(idade);
 	}
 
-	public Clientes(String email, String nome, int idade) {
-		this.email = email;
-		this.nome = nome;
-		this.idade = idade;
+	public Clientes(String email, String nome, int idade) throws CadastradorExceptions{
+		this.setEmail(email);
+		this.setNome(nome);
+		this.setIdade(idade);
 	}
 	
 	public Clientes(Integer id) {
@@ -29,15 +31,14 @@ public class Clientes {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws CadastradorExceptions {
+		if(email.isBlank() || email.length() < 10) {
+			throw new CadastradorExceptions("Error: Email inválido.");
+		}
 		this.email = email;
 	}
 
@@ -45,7 +46,10 @@ public class Clientes {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome(String nome) throws CadastradorExceptions {
+		if(nome.isBlank() || nome.length() < 3) {
+			throw new CadastradorExceptions("Error: Nome Inválido.");
+		}
 		this.nome = nome;
 	}
 
@@ -53,7 +57,10 @@ public class Clientes {
 		return idade;
 	}
 
-	public void setIdade(int idade) {
+	public void setIdade(int idade) throws CadastradorExceptions{
+		if(idade < 0) {
+			throw new CadastradorExceptions("Error: Idade Inválida.");
+		}
 		this.idade = idade;
 	}
 
