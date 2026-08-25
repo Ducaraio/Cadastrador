@@ -36,7 +36,7 @@ public class Clientes {
 	}
 
 	public void setEmail(String email) throws CadastradorExceptions {
-		if(email.isBlank() || email.length() < 10) {
+		if(email.isBlank()) {
 			throw new CadastradorExceptions("Error: Email inválido.");
 		}
 		this.email = email;
@@ -47,7 +47,7 @@ public class Clientes {
 	}
 
 	public void setNome(String nome) throws CadastradorExceptions {
-		if(nome.isBlank() || nome.length() < 3) {
+		if(nome.isBlank()) {
 			throw new CadastradorExceptions("Error: Nome Inválido.");
 		}
 		this.nome = nome;

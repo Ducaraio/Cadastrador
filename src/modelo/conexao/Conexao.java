@@ -12,7 +12,7 @@ public class Conexao {
 	public static Connection novaConnection() throws CadastradorExceptions {
 		try {
 			if (conn == null) {
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cliente", "developer", "1234567");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Cliente", "developer", "1234567");
 			}
 		} catch (SQLException e) {
 			throw new CadastradorExceptions("Error:" + e.getMessage());

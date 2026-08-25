@@ -2,17 +2,14 @@ package modelo.app;
 
 
 import java.sql.Connection;
+
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 import modelo.conexao.Conexao;
 import modelo.entidades.Clientes;
 import modelo.mainexceptions.CadastradorExceptions;
-import modelo.services.AddClientes;
-import modelo.services.CheckClientes;
-import modelo.services.DeleteCliente;
-import modelo.services.LoadClientes;
-import modelo.services.UpdateClientes;
+import modelo.services.crudClientes;
 
 public class Programa {
 	public static void main(String[]args) {
@@ -30,11 +27,11 @@ public class Programa {
 		int opt = sc.nextInt();
 		opt = AppRules.optionRule(opt, sc);
 		System.out.println("\n".repeat(2));
+		
 		try {
-			
 			Connection conn = Conexao.novaConnection();
+			crudClientes cc = new crudClientes(conn);
 			while(opt != 0) {
-				LoadClientes.load(cliente, conn);
 				sc.nextLine();
 				switch(opt) {
 				case 1:
@@ -50,7 +47,7 @@ public class Programa {
 					System.out.print("Idade: ");
 					int idade = sc.nextInt();
 					Clientes addC = new Clientes(email, nome, idade);
-					AddClientes.Adicionar(conn, addC);
+					cc.adicionar(addC);
 					System.out.println("--".repeat(10));
 					System.out.println("Cliente adicionado.");
 					System.out.println("--".repeat(10));
@@ -76,7 +73,7 @@ public class Programa {
 					int conf = sc.nextInt();
 					conf = AppRules.confCase2(conf, sc);
 					sc.nextLine();
-					UpdateClientes.update(conf, id, sc, conn);
+					cc.updateClientes(conf, id, sc);
 					System.out.println();
 					System.out.println("--".repeat(10));
 					System.out.println("Informações atualizadas.");
@@ -94,7 +91,7 @@ public class Programa {
 					System.out.println("Clientes Cadastrados");
 					System.out.println("==".repeat(10));
 					System.out.println();
-					CheckClientes.check(cliente, conn);
+					cliente = cc.check();
 					System.out.println();
 					System.out.println("(5) Menu Principal \n" + "(0) Sair");
 					System.out.print("Opção: ");
@@ -113,7 +110,7 @@ public class Programa {
 					sc.nextLine();
 					System.out.print("Senha de confirmação: ");
 					String senha = sc.next();
-					DeleteCliente.delete(id, conn, senha, cliente);
+					cc.remover(id, cliente, senha);
 					System.out.println();
 					System.out.println("(5) Menu Principal \n" + "(0) Sair");
 					System.out.print("Opção: ");
@@ -137,10 +134,16 @@ public class Programa {
 					break;
 				}
 			}
-			Conexao.finishConnection();
+			
 		}catch(CadastradorExceptions e) {
 			System.out.println(e.getMessage());
 		}finally{
+			try {
+				Conexao.finishConnection();
+			}
+			catch(CadastradorExceptions e){
+				System.out.println( e.getCause());
+			}
 			System.out.println("=_".repeat(10) + "=");
 			System.out.println("Programa encerrado.");
 			System.out.println("=_".repeat(10) + "=");
